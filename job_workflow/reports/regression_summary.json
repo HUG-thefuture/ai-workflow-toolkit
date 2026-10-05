@@ -1,0 +1,208 @@
+[
+  {
+    "file": "jd_01.txt",
+    "status": "done",
+    "position": "Java开发开发工程师",
+    "skills": [
+      "Python",
+      "Java",
+      "Linux"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_02.txt",
+    "status": "done",
+    "position": "前端工程师开发工程师",
+    "skills": [
+      "Java",
+      "Docker",
+      "Linux"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_03.txt",
+    "status": "done",
+    "position": "测试开发开发工程师",
+    "skills": [
+      "Python",
+      "pytest",
+      "Redis"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_04.txt",
+    "status": "done",
+    "position": "数据开发开发工程师",
+    "skills": [
+      "Vue",
+      "Docker",
+      "pytest"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_06.txt",
+    "status": "done",
+    "position": "AI应用开发开发工程师",
+    "skills": [
+      "Python",
+      "Java",
+      "pytest"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_07.txt",
+    "status": "done",
+    "position": "Python后端开发工程师",
+    "skills": [
+      "Python",
+      "Java",
+      "MySQL",
+      "Linux",
+      "SQL"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_08.txt",
+    "status": "done",
+    "position": "Java开发开发工程师",
+    "skills": [
+      "Python",
+      "Java",
+      "Docker"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_09.txt",
+    "status": "done",
+    "position": "前端工程师开发工程师",
+    "skills": [
+      "MySQL",
+      "Vue",
+      "Linux",
+      "SQL"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_10.txt",
+    "status": "done",
+    "position": "测试开发开发工程师",
+    "skills": [
+      "Python",
+      "Java",
+      "Docker"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_11.txt",
+    "status": "done",
+    "position": "数据开发开发工程师",
+    "skills": [
+      "Java",
+      "Vue",
+      "Linux"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_12.txt",
+    "status": "done",
+    "position": "运维工程师开发工程师",
+    "skills": [
+      "Python",
+      "Java",
+      "Linux"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_13.txt",
+    "status": "done",
+    "position": "AI应用开发开发工程师",
+    "skills": [
+      "Python",
+      "Docker",
+      "pytest"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_14.txt",
+    "status": "done",
+    "position": "Python后端开发工程师",
+    "skills": [
+      "Python",
+      "MySQL",
+      "Linux",
+      "SQL",
+      "Redis"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_16.txt",
+    "status": "done",
+    "position": "前端工程师开发工程师",
+    "skills": [
+      "MySQL",
+      "Vue",
+      "Linux",
+      "SQL"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_17.txt",
+    "status": "done",
+    "position": "测试开发开发工程师",
+    "skills": [
+      "MySQL",
+      "Docker",
+      "SQL",
+      "Redis"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_18.txt",
+    "status": "done",
+    "position": "数据开发开发工程师",
+    "skills": [
+      "Python",
+      "Linux",
+      "pytest"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_19.txt",
+    "status": "done",
+    "position": "运维工程师开发工程师",
+    "skills": [
+      "MySQL",
+      "Docker",
+      "Linux",
+      "SQL"
+    ],
+    "nodes": 3
+  },
+  {
+    "file": "jd_20.txt",
+    "status": "done",
+    "position": "AI应用开发开发工程师",
+    "skills": [
+      "Java",
+      "Linux",
+      "Redis"
+    ],
+    "nodes": 3
+  }
+]

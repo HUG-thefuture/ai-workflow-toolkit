@@ -1,0 +1,54 @@
+# 求职材料处理工作流 · Dify DSL（在 Dify 后台 导入 DSL 文件 即可重建）
+# 本文件为手工编写的 DSL 骨架（节点 id/边 与 Python 等价实现 workflow.py 对应）；
+# Dify 版本不同字段略有差异，导入后按节点说明微调即可。
+app:
+  mode: workflow
+  name: 求职材料处理
+workflow:
+  nodes:
+    - id: start
+      type: start
+      data: { variables: [ { variable: jd_text, type: paragraph, required: true } ] }
+    - id: input_clean
+      type: code
+      data: { code_language: python, code: "def main(jd_text: str) -> dict:\n    import re\n    return {'clean': re.sub(r'\s+', ' ', jd_text).strip()}" }
+    - id: llm_extract
+      type: llm
+      data:
+        model: { provider: openai, name: gpt-4o-mini, completion_params: { response_format: json_object } }
+        prompt_template:
+          - role: user
+            text: "从岗位描述抽取 JSON：{position,skills[],degree,min_years,location}，只输出 JSON。\n{{#input_clean.clean#}}"
+    - id: rule_validate
+      type: code
+      data:
+        code_language: python
+        code: |
+          def main(extracted: dict) -> dict:
+              required = {'position': str, 'skills': list, 'degree': str, 'min_years': int, 'location': str}
+              errors = []
+              for k, typ in required.items():
+                  v = extracted.get(k)
+                  if v in (None, '', []) : errors.append('缺少必填字段 ' + k)
+                  elif typ is int and not isinstance(v, int): errors.append(k + ' 需为整数')
+              return {'ok': not errors, 'errors': errors}
+    - id: condition_branch
+      type: if-else
+      data: { conditions: [ { variable: '{{#rule_validate.ok#}}', comparison: is, value: true } ] }
+    - id: retry_extract
+      type: llm
+      data: { model: { provider: openai, name: gpt-4o-mini }, retry_config: { max_retries: 2 } }
+    - id: manual_confirm
+      type: human
+      data: { title: '抽取失败转人工', desc: '{{#rule_validate.errors#}}' }
+    - id: summarize
+      type: end
+      data: { outputs: [ { variable: extracted, value_selector: [llm_extract, text] } ] }
+  edges:
+    - { source: start, target: input_clean }
+    - { source: input_clean, target: llm_extract }
+    - { source: llm_extract, target: rule_validate }
+    - { source: rule_validate, target: condition_branch }
+    - { source: condition_branch, target: summarize, branch: true }
+    - { source: condition_branch, target: retry_extract, branch: false }
+    - { source: retry_extract, target: manual_confirm }

@@ -1,0 +1,47 @@
+[
+  {
+    "subject": "XX公司面试邀请",
+    "category": "面试",
+    "task": "参加「XX公司面试邀请」相关面试，携带简历与证件",
+    "due": "3月18日",
+    "valid": true,
+    "duplicate": false,
+    "created": true
+  },
+  {
+    "subject": "月度考核通知",
+    "category": "通知",
+    "task": null,
+    "due": null,
+    "valid": true,
+    "duplicate": false,
+    "created": false
+  },
+  {
+    "subject": "材料提交提醒",
+    "category": "待办",
+    "task": "于 2026-03-25 前提交实习协议扫描件，完成。",
+    "due": "2026-03-25",
+    "valid": true,
+    "duplicate": false,
+    "created": true
+  },
+  {
+    "subject": "周末活动回顾",
+    "category": "普通",
+    "task": null,
+    "due": null,
+    "valid": true,
+    "duplicate": false,
+    "created": false
+  },
+  {
+    "subject": "复试通知（时间更正）",
+    "category": "面试",
+    "task": "参加「复试通知（时间更正）」相关面试，携带简历与证件",
+    "due": "3月18日",
+    "valid": true,
+    "duplicate": true,
+    "created": false
+  }
+]
