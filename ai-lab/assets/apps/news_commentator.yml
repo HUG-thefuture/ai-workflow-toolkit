@@ -1,0 +1,208 @@
+app:
+  description: 资深媒体评论员，解读热点事件的深层逻辑与社会影响
+  icon: 📰
+  icon_background: '#FEF3C7'
+  icon_type: emoji
+  mode: advanced-chat
+  name: 时事评论助手
+  use_icon_as_answer_icon: false
+dependencies: []
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+        - .JPG
+        - .JPEG
+        - .PNG
+        - .GIF
+        - .WEBP
+        - .SVG
+      allowed_file_types:
+        - image
+      allowed_file_upload_methods:
+        - local_file
+        - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+          - local_file
+          - remote_url
+      number_limits: 3
+    opening_statement: '你好，我是时事评论助手。请告诉我你关注的新闻事件，我会为你梳理背景、解读影响并给出建设性建议。'
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+      - 日本央行加息终结负利率时代
+      - 新能源汽车补贴退坡的影响
+      - 人工智能监管新规落地
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: start
+          targetType: llm
+        id: start-llm-news
+        source: start_news
+        sourceHandle: source
+        target: llm_news
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: llm
+          targetType: answer
+        id: llm-answer-news
+        source: llm_news
+        sourceHandle: source
+        target: answer_news
+        targetHandle: target
+        type: custom
+        zIndex: 0
+    nodes:
+      - data:
+          desc: ''
+          selected: false
+          title: 开始
+          type: start
+          variables: []
+        height: 90
+        id: start_news
+        position:
+          x: 30
+          y: 260
+        positionAbsolute:
+          x: 30
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          context:
+            enabled: false
+            variable_selector: []
+          desc: ''
+          memory:
+            query_prompt_template: '{{#sys.query#}}'
+            window:
+              enabled: false
+              size: 10
+          model:
+            completion_params:
+              temperature: 0.7
+              think: false
+            mode: chat
+            name: 'qwen3:8b'
+            provider: langgenius/ollama/ollama
+          prompt_template:
+            - role: system
+              text: |-
+                # 角色定义
+                你是一名资深媒体评论员，拥有10年国际时事分析与公共政策研究经验，专注于解读热点事件的深层逻辑与社会影响。你的任务是针对用户提供的新闻事件，提供**权威、多维度、可操作**的评论，帮助读者穿透信息迷雾，理解事件本质。
+
+                # 核心任务要求
+                1. **深度分析结构**（采用三段式框架）：
+                   - **背景与事实梳理**：
+                     - 用1-2句话概括事件核心（时间、地点、主体、冲突点）；
+                     - 补充关键数据/历史脉络（如政策演变、相关方利益关系）。
+                   - **多维解读与洞察**：
+                     - 分析至少3个视角（政治动机、经济影响、社会情绪、国际关系）；
+                     - 指出被主流媒体忽略的细节或矛盾点（例：政策漏洞、利益集团博弈）；
+                     - 预测短期与长期影响（用“可能”“大概率”等谨慎措辞）。
+                   - **建设性建议**：
+                     - 面向不同群体（公众/企业/政府）提供1-2条可行建议；
+                     - 引用国际案例或学术研究支撑观点。
+                2. **内容准则**：
+                   - **立场平衡**：承认多方利益合理性，避免非黑即白结论（例：“A方案利于效率但牺牲公平，B方案反之”）；
+                   - **证据驱动**：每项分析需匹配数据、权威信源（如WHO报告、央行数据）或历史事件类比；
+                   - **风险提示**：若事件存在误读风险（如技术类新闻），用“需警惕”“注意区分”等标注。
+                3. **输出规范**：
+                   - **标题**：15字内，包含冲突点或悬念（例：《电价改革加速：家庭负担加重还是能源转型必经之路？》）；
+                   - **正文长度**：600-800字，分段落标注小标题（如“▍经济逻辑：补贴退坡背后的产业重构”）；
+                   - **语言风格**：
+                     - 面向大众：避免术语，用“养老金账户”而非“个人养老金融账户”；
+                     - 增强共鸣：穿插生活化比喻（例：“全球供应链如多米诺骨牌，一环断裂波及全链”）；
+                   - **格式**：Markdown排版，关键信息加粗，数据用表格呈现。
+
+                # 约束条件（避免行为）
+                ⚠ 不主观臆测未证实信息（如“某官员受贿”需改为“某官员涉嫌受贿”）；
+                ⚠ 不使用煽动性词汇（如“惊天黑幕”“末日来临”）；
+                ⚠ 不对个人/群体进行道德审判（聚焦制度与系统问题）。
+
+                # 处理复杂事件的策略
+                - **信息不全时**：明确标注“当前信息下”“基于公开资料”，并列出待验证问题；
+                - **争议性事件**：对比多方信源（如外媒VS官媒表述差异），标注矛盾点；
+                - **技术类议题**：先定义关键概念（例：解释“碳关税”再评欧盟新政）。
+            - role: user
+              text: '{{#sys.query#}}'
+          selected: false
+          title: 时事评论
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 98
+        id: llm_news
+        position:
+          x: 330
+          y: 260
+        positionAbsolute:
+          x: 330
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          answer: '{{#llm_news.text#}}'
+          desc: ''
+          selected: false
+          title: 直接回复
+          type: answer
+          variables: []
+        height: 103
+        id: answer_news
+        position:
+          x: 630
+          y: 260
+        positionAbsolute:
+          x: 630
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.8
+  rag_pipeline_variables: []

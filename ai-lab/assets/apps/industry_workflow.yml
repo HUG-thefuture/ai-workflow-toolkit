@@ -1,0 +1,185 @@
+app:
+  description: 输入主题，调用本地大模型生成结构化产业分析文章
+  icon: 🏭
+  icon_background: '#EDE9FE'
+  icon_type: emoji
+  mode: workflow
+  name: 产业分析工作流
+  use_icon_as_answer_icon: false
+dependencies: []
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+        - .JPG
+        - .JPEG
+        - .PNG
+        - .GIF
+        - .WEBP
+        - .SVG
+      allowed_file_types:
+        - image
+      allowed_file_upload_methods:
+        - local_file
+        - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+          - local_file
+          - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: start
+          targetType: llm
+        id: start-llm-industry
+        source: start_industry
+        sourceHandle: source
+        target: llm_industry
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: llm
+          targetType: end
+        id: llm-end-industry
+        source: llm_industry
+        sourceHandle: source
+        target: end_industry
+        targetHandle: target
+        type: custom
+        zIndex: 0
+    nodes:
+      - data:
+          desc: ''
+          selected: false
+          title: 开始
+          type: start
+          variables:
+            - hint: 请输入需要分析的主题，例如：新能源汽车发展概况
+              label: 分析主题
+              max_length: 200
+              options: []
+              placeholder: 新能源汽车发展概况
+              required: true
+              type: text-input
+              variable: target
+        height: 90
+        id: start_industry
+        position:
+          x: 30
+          y: 260
+        positionAbsolute:
+          x: 30
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          context:
+            enabled: false
+            variable_selector: []
+          desc: ''
+          memory:
+            query_prompt_template: ''
+            window:
+              enabled: false
+              size: 10
+          model:
+            completion_params:
+              temperature: 0.5
+              max_tokens: 2048
+              think: false
+            mode: chat
+            name: 'qwen3:8b'
+            provider: langgenius/ollama/ollama
+          prompt_template:
+            - role: system
+              text: >-
+                你是一名资深产业研究员。请围绕用户给定的主题，撰写一篇结构完整、条理清晰的分析文章，
+                使用 Markdown 格式，包含以下小节：1. 引言与定义；2. 发展现状；3. 关键技术；
+                4. 政策环境；5. 面临的挑战；6. 未来趋势。全文约 600 字，观点客观，数据谨慎表述。
+            - role: user
+              text: '请分析以下主题：{{#start_industry.target#}}'
+          selected: false
+          title: 产业分析
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 98
+        id: llm_industry
+        position:
+          x: 330
+          y: 260
+        positionAbsolute:
+          x: 330
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          desc: ''
+          outputs:
+            - value_selector:
+                - llm_industry
+                - text
+              value_type: string
+              variable: output
+          selected: false
+          title: 结束
+          type: end
+        height: 90
+        id: end_industry
+        position:
+          x: 630
+          y: 260
+        positionAbsolute:
+          x: 630
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+  rag_pipeline_variables: []

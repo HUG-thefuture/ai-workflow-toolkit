@@ -1,0 +1,12 @@
+# local credentials
+.env.local
+.coze_api_key
+
+# upstream source clones
+dify/
+coze-studio/
+
+# runtime artifacts
+__pycache__/
+*.pyc
+*.log

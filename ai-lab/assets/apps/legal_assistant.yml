@@ -1,0 +1,225 @@
+app:
+  description: 基于刑法知识库的法律问答助手
+  icon: ⚖️
+  icon_background: '#E0F2FE'
+  icon_type: emoji
+  mode: advanced-chat
+  name: 法律小助手
+  use_icon_as_answer_icon: false
+dependencies: []
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+        - .JPG
+        - .JPEG
+        - .PNG
+        - .GIF
+        - .WEBP
+        - .SVG
+      allowed_file_types:
+        - image
+      allowed_file_upload_methods:
+        - local_file
+        - remote_url
+      enabled: false
+      fileUploadConfig:
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        image_file_size_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+          - local_file
+          - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions:
+      - 入室盗窃会触犯哪些法律？
+      - 故意伤害他人会怎么判？
+      - 故意毁坏财物构成什么罪？
+    suggested_questions_after_answer:
+      enabled: true
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: start
+          targetType: knowledge-retrieval
+        id: start-kr-legal
+        source: start_legal
+        sourceHandle: source
+        target: kr_legal
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: knowledge-retrieval
+          targetType: llm
+        id: kr-llm-legal
+        source: kr_legal
+        sourceHandle: source
+        target: llm_legal
+        targetHandle: target
+        type: custom
+        zIndex: 0
+      - data:
+          isInIteration: false
+          isInLoop: false
+          sourceType: llm
+          targetType: answer
+        id: llm-answer-legal
+        source: llm_legal
+        sourceHandle: source
+        target: answer_legal
+        targetHandle: target
+        type: custom
+        zIndex: 0
+    nodes:
+      - data:
+          desc: ''
+          selected: false
+          title: 开始
+          type: start
+          variables: []
+        height: 90
+        id: start_legal
+        position:
+          x: 30
+          y: 260
+        positionAbsolute:
+          x: 30
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          dataset_ids:
+            - __DATASET_ID__
+          multiple_retrieval_config:
+            reranking_enable: false
+            reranking_model:
+              model: ''
+              provider: ''
+            score_threshold: 0.25
+            score_threshold_enabled: true
+            top_k: 6
+          query_attachment_selector: []
+          query_variable_selector:
+            - start_legal
+            - sys.query
+          retrieval_mode: multiple
+          selected: false
+          title: 知识检索
+          type: knowledge-retrieval
+        height: 90
+        id: kr_legal
+        position:
+          x: 330
+          y: 260
+        positionAbsolute:
+          x: 330
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          context:
+            enabled: true
+            variable_selector:
+              - kr_legal
+              - result
+          desc: ''
+          memory:
+            query_prompt_template: '{{#sys.query#}}'
+            window:
+              enabled: false
+              size: 10
+          model:
+            completion_params:
+              temperature: 0.1
+              think: false
+            mode: chat
+            name: 'qwen3:8b'
+            provider: langgenius/ollama/ollama
+          prompt_template:
+            - role: system
+              text: >-
+                你是一个法律小助手。请严格依据检索到的法条回答，不得引用检索结果中没有出现的法条，
+                也不得凭常识推断或联想其他罪名。
+                回答要求：
+                1. 先判断用户描述的行为最直接对应哪一条刑法条文，优先选择条文原文中明确包含该行为表述的法条；
+                2. 按“适用法条 → 罪名 → 理由”的格式输出，如有多条则逐条列出；
+                3. 引用时给出法律名称、条号和罪名；
+                4. 如果检索结果中没有直接对应的条文，请明确回答“知识库中未找到相关法律依据”。
+            - role: user
+              text: '{{#sys.query#}}'
+          selected: false
+          title: 法律问答
+          type: llm
+          variables: []
+          vision:
+            enabled: false
+        height: 98
+        id: llm_legal
+        position:
+          x: 630
+          y: 260
+        positionAbsolute:
+          x: 630
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+      - data:
+          answer: '{{#llm_legal.text#}}'
+          desc: ''
+          selected: false
+          title: 直接回复
+          type: answer
+          variables: []
+        height: 103
+        id: answer_legal
+        position:
+          x: 930
+          y: 260
+        positionAbsolute:
+          x: 930
+          y: 260
+        selected: false
+        sourcePosition: right
+        targetPosition: left
+        type: custom
+        width: 244
+    viewport:
+      x: 0
+      y: 0
+      zoom: 0.7
+  rag_pipeline_variables: []
